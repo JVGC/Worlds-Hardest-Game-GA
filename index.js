@@ -4,6 +4,8 @@ var xoff = 80;
 var yoff = 100;
 
 
+var result = [];
+
 var showBest = false; // Indica se deve mostrar somente o melhor ou não
 var numberOfSteps = 10; // 
 
@@ -49,6 +51,7 @@ function setup(){
     startDiv = createDiv("")
     startGame = createButton("Start Game");
     startGame.mousePressed(createLevel);
+    
 
     noLoop()
 }
@@ -162,3 +165,17 @@ function keyPressed(){
     }
 }
 
+function toFile(){
+
+    
+    let csvContent = "data:text/csv;charset=utf-8," 
+        + result.map(e => e.join(",")).join("\n");
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "data.csv");
+        document.body.appendChild(link); // Required for FF
+        
+        link.click(); // This will download the data file named "my_data.csv".
+}

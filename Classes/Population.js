@@ -6,7 +6,7 @@ class Population {
     this.fitnessSum = 0.0;
     this.gen = 1;
     this.bestPlayer = 0;
-    this.worstPlayer = 0
+    this.worstPlayer = 100000000
     this.lastBest=0;
     this.minStep = 10000;
     this.genPlayers = [];
@@ -139,7 +139,7 @@ class Population {
     
     // Soma o fitness de tood mundo
     this.calculateFitnessSum();
-
+    result.push([((this.fitnessSum/500)*100000000000).toFixed(12), (this.bestFitness*100000000000).toFixed(12), (this.worstFitness*100000000000).toFixed(12)])
     // Clona o melhor jogador para a próxima geração
     newPlayers[0] = this.players[this.bestPlayer].gimmeBaby();
     newPlayers[0].isBest = true;
