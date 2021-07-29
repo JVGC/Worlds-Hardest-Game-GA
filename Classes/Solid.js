@@ -10,7 +10,7 @@ class Solid {
   }
 
 
-    restrictMovement(tl, br, movement) {
+   restrictMovement(tl, br, movement) {
 
     var x = movement.x;
     var y = movement.y;

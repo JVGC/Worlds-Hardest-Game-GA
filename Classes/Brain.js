@@ -12,7 +12,7 @@ class Brain {
     }
   }
 
-
+  // Pega uma direção aleatória para seguir
   getRandomDirection() {
     var randomNumber = floor(random(9));
     switch(randomNumber) {
@@ -47,10 +47,12 @@ class Brain {
     return clone;
   }
 
-
+  // Mutação propriamente dita
+  // A ideia é mudar apenas algumas direções feitas pelo player
   mutate(died, deathStep, mutationRate) {
     for (var i =0; i< this.directions.length; i++) {
       var rand = random(5);
+      // Se ele morreu, não quero mudar as primeiras direções dele
       if (died && i > deathStep - 10) {
         rand = random(0.2);
       }

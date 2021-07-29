@@ -1,6 +1,7 @@
 class Population {
 
   constructor(size, playersInitialPosition, nodes, coins, naturalSelectionMethod, needsCoin, mutationType='static', randomPredationUse=false) {
+    // Variaveis de SETUP da população
     this.players = [];
     this.fitnessSum = 0.0;
     this.gen = 1;
@@ -15,13 +16,14 @@ class Population {
     this.mutationRate = mutationRate
     this.naturalSelectionMethod = naturalSelectionMethod
     this.mutationType = mutationType
+    // Inicia a primeira gerçaão
     for (var i = 0; i< size; i++) {
         
       this.players[i] = new Player(playersInitialPosition, nodes, coins, needsCoin);
     }
     this.randomPredationUse = randomPredationUse
   }
-
+  // Seta os nós para cada jogador daquele geração
   setNodes(nodes, coins, tiles){
     for (var i = 0; i< this.players.length; i++) {
         
@@ -29,7 +31,7 @@ class Population {
       }
   }
 
-
+  // Mostra os players da geração ou somente o melhor
    show() {
     if (!showBest) {
         for (var i = 1; i< this.players.length; i++) {
@@ -40,11 +42,17 @@ class Population {
     
   }
 
+  // Calcula o Fitness para cada player
   calculateFitnessPlayer(i){
 
+    // Se o jogador já chegou, o fitness dele é um valor bem alto
     if (this.players[i].reachedGoal) {
-        this.players[i].fitness = 10000.0/(this.players[i].brain.step * this.players[i].brain.step);
+        this.players[i].fitness = 10000.0
       } else {
+
+        // A distância é calculada baseada na distância entre os o player e a moeda e a área de WIN.
+        // Prioridade do jogador é conseguir a moeda e depois ir para a área final.
+        // Portanto o fitness é baseado nisso
         var estimatedDistance = 0.0;
 
         for (var j = this.players[i].nodes.length-1; j>=0; j--) {
@@ -53,14 +61,18 @@ class Population {
             estimatedDistance += dist(this.players[i].pos.x, this.players[i].pos.y, this.players[i].nodes[j].pos.x, this.players[i].nodes[j].pos.y);
           }
         }
+        // Se o player morreu por um Dot, então seu fitness é diminuido
         if (this.players[i].deathByDot) {
           estimatedDistance *= 0.9;
         }
-        
+        // O fitness é o inverso da distância ao quadrado para a moeda ou o final.
+        // Portando quando menor a distancia, maior o fitness do jogador
         this.players[i].fitness = 1.0/(estimatedDistance * estimatedDistance);
 
       }
+
       this.players[i].fitness*=this.players[i].fitness;
+      // Se o player já pegou a moeda, quer dizer que está indo bem portanto o seu fitness é aumentado
       if(this.players[i].coinTaken){
         this.players[i].fitness *=1.5;
       }
@@ -72,7 +84,7 @@ class Population {
     }
   }
 
-
+  // Verificada se todos os players ja morreram
    allPlayersDead() {
     for (var i = 0; i< this.players.length; i++) {
       if (!this.players[i].dead && !this.players[i].reachedGoal) {
@@ -84,6 +96,8 @@ class Population {
 
    naturalSelection() {
 
+    // Seleção Natural
+    // Cria uma nova geração de jogadores
     var newPlayers= [];
     if(this.naturalSelectionMethod == 'cloneBest'){
         newPlayers = this.naturalSelectionCloneBest()
@@ -98,6 +112,8 @@ class Population {
 
   naturalSelectionCloneBest(){
     var newPlayers= [];
+    // Deixa marcado o último melhor jogador
+    // E seleciona um novo melhor jogador e um pior jogador
     this.lastBest = this.players[this.bestPlayer].fitness;
     this.setBestPlayer();
     this.setWorstPlayer();
@@ -110,19 +126,24 @@ class Population {
     }
     
     // Mutação Variavel
+    // Se o tipo de mutação escolhida é a variavel
+    // Então se verificada se o fitness do melhor jogador se manteve para ai alterar o mutation rate
     if(this.mutationType == 'variable'){
         if(abs(this.lastBest - this.players[this.bestPlayer].fitness) < 0.000000000000000001){
             this.mutationRate *=2
         }else{
+            // Se nao, só volta para o inicial
             this.mutationRate = mutationRate
         }
     }
     
-
+    // Soma o fitness de tood mundo
     this.calculateFitnessSum();
 
+    // Clona o melhor jogador para a próxima geração
     newPlayers[0] = this.players[this.bestPlayer].gimmeBaby();
     newPlayers[0].isBest = true;
+    // E gera uma nova geração, com reprodução assexuada
     for (var i = 1; i< populationSize; i++) {
       var parent = this.selectParent();
 
@@ -146,6 +167,7 @@ class Population {
 
     var rand = random(this.fitnessSum);
 
+    // Seleciona um pai para aquele jogador novo
     for (var i = 0; i< this.players.length; i++) {
       runningSum+= this.players[i].fitness;
       if (runningSum > rand) {
@@ -156,8 +178,9 @@ class Population {
     return null;
   }
 
+
+   // Faz a mutação em si 
    mutateDemBabies() {
-    console.log(this.mutationRate)
     for (var i = 1; i< this.players.length; i++) {
         
       this.players[i].brain.mutate(this.players[i].deathByDot, this.players[i].deathAtStep, this.mutationRate);
@@ -170,10 +193,12 @@ class Population {
 
   
   randomPredation(){
-    this.players[this.worstPlayer].brain = new Brain(numberOfSteps)
+    this.players[this.worstPlayer].brain = new Brain(this.players[this.worstPlayer].brain.directions.length)
   }
 
 
+
+   // Seleciona o melhor jogador
    setBestPlayer() {
     var max = 0;
     var maxIndex = 0;
@@ -198,6 +223,7 @@ class Population {
     }
   }
 
+  // Seleciona o pior jogador
   setWorstPlayer(){
     var min = this.players[this.bestPlayer].fitness
     var minIndex = this.bestPlayer;
@@ -223,7 +249,7 @@ class Population {
   }
 
 
-
+// Aumenta o número de moves permitidos para aquela geração
  increaseMoves() {
     if (this.players[0].brain.directions.length < 120 && !this.solutionFound) {
       for (var i = 0; i< this.players.length; i++) {

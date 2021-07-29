@@ -20,13 +20,16 @@ class Player{
     this.needsCoin = needsCoin
     this.coinTaken = false
   }
-
+  // Seta os nós
+  // São setados em ordem de prioridade para o jogador, sendo o 0 o nó a ser alcançado primeiro, e o último o nó a ser alcançado por ultimo
+  // Nesse jogo, o nó 0 é a moeda, e o nó 1 é o objetivo final
   setNodes(nodes, coins, tiles) {
     this.nodes[1] = new Node(tiles[nodes[0]][nodes[1]],true,false);
     this.nodes[0] = new Node(coins[0],false,true);
     this.nodes[0].setDistanceToFinish(this.nodes[1]);
   }
 
+  // Desenha o jogador
   show(){
     fill(255, 0, 0, this.fadeCounter);
     if (this.isBest) {
@@ -37,12 +40,15 @@ class Player{
     rect(this.pos.x, this.pos.y, this.size, this.size);
     stroke(0);
   }
+  // Pega a moeda
   getCoin(){
       if(this.needsCoin){
           this.coinTaken = true
       }
   }
 
+
+  // Movimenta o jogador
   move(solids){
     if (this.moveCount == 0) {
         if (this.brain.directions.length > this.brain.step) {
@@ -60,11 +66,13 @@ class Player{
     var temp = createVector(this.vel.x, this.vel.y);
     temp.normalize();
     temp.mult(this.playerSpeed);
+    // O movimento é restringido  pelas bordas da fase
     for (var i = 0; i< solids.length; i++) {
       temp = solids[i].restrictMovement(this.pos, createVector(this.pos.x+this.size, this.pos.y+this.size), temp);
     }
     this.pos.add(temp);
   }
+  // Clona um player igual ao this
 
  gimmeBaby() {
   var baby = new Player(this.initialPosition, this.nodes, this.needsCoin);

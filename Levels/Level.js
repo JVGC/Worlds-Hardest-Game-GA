@@ -9,6 +9,7 @@ class Level {
         this.dotType = dotType
         this.createTiles(LevelAreaSize)
 
+        // Inicialização do SETUP da fase
         this.setWalls(walls)
         this.setGoal(goal)
         this.setSafeArea(safeArea)
@@ -76,6 +77,7 @@ class Level {
     }
 
     setDots(dots){
+        // Escolhe entre dots que só andam para cima ou para baixo ou dots que andam nas duas direções como o nivel 3
         if(this.dotType=='3d'){
             this.setDots3D(dots)
         }else if(this.dotType=='2d'){
@@ -123,6 +125,7 @@ class Level {
     }
 
     checkCollisions(player) {
+        // Checa a colisão do player com as moedas, os dots, e o area de Win
         let isCoinTaken
         if(this.coins && this.coins.length > 0){
             if(!player.coinTaken){
@@ -144,11 +147,13 @@ class Level {
           player.reachedGoal = true;
         }
         }
+        // Atualiza os nós do player indicando se chegou ou não ali
         for (var i = 0; i< player.nodes.length; i++) {
           player.nodes[i].collision(player.pos, createVector(player.pos.x+player.size, player.pos.y+player.size));
         }
     }
 
+    // Atualiza cada player, movendo e checando colisão
     updatePlayers(players, minStep){
         for (var i = 0; i< players.length; i++) {
             if (players[i].brain.step > minStep) {
