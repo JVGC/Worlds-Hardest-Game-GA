@@ -3,20 +3,16 @@ var xoff = 80;
 var yoff = 100;
 
 var showBest = false;
-//population vars
 var numberOfSteps = 10;
 
 var winCounter = -1;
 
-//population size vars
 var testPopulation;
 var  populationSize = 500;
 
-//mutation rate vars
 var mutationRate = 0.01;
 var randomPredationStep = 10;
 
-//evolution speed vars
 var evolutionSpeed =1;
 
 var increaseMovesBy =5;
@@ -49,7 +45,7 @@ function setup(){
 
     drawInitialSettings();
     startDiv = createDiv("")
-    startGame = createButton("StartGame");
+    startGame = createButton("Start Game");
     startGame.mousePressed(createLevel);
 
     noLoop()
@@ -69,8 +65,7 @@ function createLevel() {
     actual_level.setDots(levels[selectedLevel]['dots'])
     testPopulation =  new Population(populationSize, actual_level['playersInitialPosition'], levels[selectedLevel]['nodes'], levels[selectedLevel]['coins'], 'cloneBest', true, mutationType[selectedMutationType], randomPredationSelected)
     testPopulation.setNodes( levels[selectedLevel]['nodes'], actual_level.coins, actual_level.tiles)
-    startGame.html("Reiniciar o Jogo")
-    removeInitialSettings()
+    startGame.html("Restart Game")
     loop();
 }
 
@@ -80,35 +75,33 @@ function draw(){
         drawTiles();
         DrawInformation();
 
-
-        if (testPopulation.allPlayersDead()) {
-            //genetic algorithm
-            testPopulation.calculateFitness()
-            testPopulation.naturalSelection();
-            testPopulation.mutateDemBabies();
-            testPopulation.setNodes(levels[selectedLevel]['nodes'], actual_level.coins, actual_level.tiles)
-            //reset dots
-            actual_level.resetDots();
-    
-            //every 5 generations incease the number of moves by 5
-            if (testPopulation.gen % increaseEvery ==0) {
-                testPopulation.increaseMoves();
-            }
-    
-        } else {
-            //update and show population
-            for(var j = 0 ; j< evolutionSpeed; j++){
-                for (var i = 0; i < actual_level.dots.length; i++) {
-                    actual_level.dots[i].move();
+        if(!testPopulation.solutionFound){
+            if (testPopulation.allPlayersDead()) {
+                testPopulation.calculateFitness()
+                testPopulation.naturalSelection();
+                testPopulation.mutateDemBabies();
+                testPopulation.setNodes(levels[selectedLevel]['nodes'], actual_level.coins, actual_level.tiles)
+                actual_level.resetDots();
+        
+                if (testPopulation.gen % increaseEvery ==0) {
+                    testPopulation.increaseMoves();
                 }
-                actual_level.updatePlayers(testPopulation.players, testPopulation.minStep);
+        
+            } else {
+                for(var j = 0 ; j< evolutionSpeed; j++){
+                    for (var i = 0; i < actual_level.dots.length; i++) {
+                        actual_level.dots[i].move();
+                    }
+                    actual_level.updatePlayers(testPopulation.players, testPopulation.minStep);
+                }
+                for (var i = 0; i < actual_level.dots.length; i++) {
+                    actual_level.dots[i].show();
+                }
+                testPopulation.show();
+                
             }
-            for (var i = 0; i < actual_level.dots.length; i++) {
-                actual_level.dots[i].show();
-            }
-            testPopulation.show();
-            
         }
+
         
     }
 

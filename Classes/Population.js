@@ -29,8 +29,7 @@ class Population {
       }
   }
 
-  //------------------------------------------------------------------------------------------------------------------------------
-  //show all players
+
    show() {
     if (!showBest) {
         for (var i = 1; i< this.players.length; i++) {
@@ -42,10 +41,12 @@ class Population {
   }
 
   calculateFitnessPlayer(i){
-    if (this.players[i].reachedGoal) {//if the dot reached the goal then the fitness is based on the amount of steps it took to get there
-        this.players[i].fitness = 1.0/16.0 + 10000.0/(this.players[i].brain.step * this.players[i].brain.step);
-      } else {//if the dot didn't reach the goal then the fitness is based on how close it is to the goal
-        var estimatedDistance = 0.0;//the estimated distance of the path from the this.players[i] to the goal
+
+    if (this.players[i].reachedGoal) {
+        this.players[i].fitness = 10000.0/(this.players[i].brain.step * this.players[i].brain.step);
+      } else {
+        var estimatedDistance = 0.0;
+
         for (var j = this.players[i].nodes.length-1; j>=0; j--) {
           if (!this.players[i].nodes[j].reached) {
             estimatedDistance = this.players[i].nodes[j].distToFinish;
@@ -71,7 +72,7 @@ class Population {
     }
   }
 
-  //returns whether all the players are either dead or have reached the goal
+
    allPlayersDead() {
     for (var i = 0; i< this.players.length; i++) {
       if (!this.players[i].dead && !this.players[i].reachedGoal) {
@@ -81,7 +82,6 @@ class Population {
     return true;
   }
 
-  //gets the next generation of players
    naturalSelection() {
 
     var newPlayers= [];
@@ -112,8 +112,7 @@ class Population {
     // Mutação Variavel
     if(this.mutationType == 'variable'){
         if(abs(this.lastBest - this.players[this.bestPlayer].fitness) < 0.000000000000000001){
-            if(this.mutationRate < 0.08)
-                this.mutationRate *=2
+            this.mutationRate *=2
         }else{
             this.mutationRate = mutationRate
         }
@@ -122,14 +121,11 @@ class Population {
 
     this.calculateFitnessSum();
 
-    //the champion lives on
     newPlayers[0] = this.players[this.bestPlayer].gimmeBaby();
     newPlayers[0].isBest = true;
     for (var i = 1; i< populationSize; i++) {
-      //select parent based on fitness
       var parent = this.selectParent();
 
-      //get baby from them
       newPlayers[i] = parent.gimmeBaby();
     }
 
@@ -161,7 +157,9 @@ class Population {
   }
 
    mutateDemBabies() {
+    console.log(this.mutationRate)
     for (var i = 1; i< this.players.length; i++) {
+        
       this.players[i].brain.mutate(this.players[i].deathByDot, this.players[i].deathAtStep, this.mutationRate);
       this.players[i].deathByDot = false;
       this.players[i].gen = this.gen;
@@ -175,8 +173,7 @@ class Population {
     this.players[this.worstPlayer].brain = new Brain(numberOfSteps)
   }
 
-  //---------------------------------------------------------------------------------------------------------------------------------------------
-  //finds the player with the highest fitness and sets it as the best player
+
    setBestPlayer() {
     var max = 0;
     var maxIndex = 0;
@@ -194,7 +191,7 @@ class Population {
       this.genPlayers.push(this.players[this.bestPlayer].gimmeBaby());
     }
 
-    //if this player reached the goal then reset the minimum number of steps it takes to get to the goal
+
     if (this.players[this.bestPlayer].reachedGoal) {
       this.minStep = this.players[this.bestPlayer].brain.step;
       this.solutionFound = true;
@@ -219,7 +216,6 @@ class Population {
       this.genPlayers.push(this.players[this.worstPlayer].gimmeBaby());
     }
 
-    //if this player reached the goal then reset the minimum number of steps it takes to get to the goal
     if (this.players[this.worstPlayer].reachedGoal) {
       this.minStep = this.players[this.worstPlayer].brain.step;
       this.solutionFound = true;

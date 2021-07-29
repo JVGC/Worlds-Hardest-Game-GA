@@ -5,16 +5,14 @@ class Brain {
     this.randomize(size);
 
   }
-  //--------------------------------------------------------------------------------------------------------------------------------
-  //sets all the vectors in directions to a random vector with length 1
+
   randomize(size) {
     for (var i = 0; i< size; i++) {
       this.directions[i] = this.getRandomDirection();
     }
   }
 
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------
-  //returns a random PVector
+
   getRandomDirection() {
     var randomNumber = floor(random(9));
     switch(randomNumber) {
@@ -41,8 +39,6 @@ class Brain {
     return createVector();
   }
 
-  //-------------------------------------------------------------------------------------------------------------------------------------
-  //returns a perfect copy of this brain object
   clone() {
     var clone = new Brain(this.directions.length);
     for (var i = 0; i < this.directions.length; i++) {
@@ -51,26 +47,20 @@ class Brain {
     return clone;
   }
 
-  //----------------------------------------------------------------------------------------------------------------------------------------
 
-  //mutates the brain by setting some of the directions to random vectors
   mutate(died, deathStep, mutationRate) {
-    //chance that any vector in directions gets changed
     for (var i =0; i< this.directions.length; i++) {
-      var rand = random(1);
+      var rand = random(5);
       if (died && i > deathStep - 10) {
         rand = random(0.2);
       }
 
       if (rand < mutationRate) {
-        //set this direction as a random direction
         this.directions[i] = this.getRandomDirection();
       }
     }
   }
 
-  //---------------------------------------------------------------------------------------------------------------------------------------------------------
-  //increases the number of elements in directions by 5
  increaseMoves() {
    for(var i = 0 ; i< increaseMovesBy ;i++){
      this.directions.push(this.getRandomDirection());

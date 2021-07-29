@@ -11,7 +11,7 @@ class Coin{
 
   }
 
-  collides(ptl, pbr) {//player dimensions
+  collides(ptl, pbr) {
 
     var topLeft = createVector(this.pos.x - this.diameter/2, this.pos.y-this.diameter/2);
     var bottomRight = createVector(this.pos.x + this.diameter/2, this.pos.y + this.diameter/2);

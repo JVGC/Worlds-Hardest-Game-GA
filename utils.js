@@ -49,19 +49,7 @@ function drawInitialSettings(){
     speedPlus = createButton('+');
     speedPlus.mousePressed(plusSpeed);
     speedMinus.mousePressed(minusSpeed);
-  
-    movesH3 = createElement("h4", "Increase number of player moves by " + increaseMovesBy + " every " + increaseEvery + " generations");
-    movesPara = createDiv("Increase moves by: " + increaseMovesBy);
-    movesMinus = createButton("-");
-    movesPlus = createButton('+');
-    movesPlus.mousePressed(plusMoves);
-    movesMinus.mousePressed(minusMoves);
-    everyPara = createDiv("Increase every " + increaseEvery + " generations");
-    everyMinus = createButton("-");
-    everyPlus = createButton('+');
-    everyPlus.mousePressed(plusEvery);
-    everyMinus.mousePressed(minusEvery);
-  
+   
 }
 
 

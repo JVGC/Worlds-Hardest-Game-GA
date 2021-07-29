@@ -19,7 +19,6 @@ class Player{
     this.brain = new Brain(numberOfSteps);
     this.needsCoin = needsCoin
     this.coinTaken = false
-    // this.setNodes(nodes)
   }
 
   setNodes(nodes, coins, tiles) {
@@ -45,11 +44,11 @@ class Player{
   }
 
   move(solids){
-    if (this.moveCount == 0) {//move in the direction for 6 frames
-        if (this.brain.directions.length > this.brain.step) {//if there are still directions left then set the velocity as the next PVector in the direcitons array
+    if (this.moveCount == 0) {
+        if (this.brain.directions.length > this.brain.step) {
           this.vel = this.brain.directions[this.brain.step];
           this.brain.step++;
-        } else {//if at the end of the directions array then the player is dead
+        } else {
           this.dead = true;
           this.fading = true;
         }
@@ -67,10 +66,9 @@ class Player{
     this.pos.add(temp);
   }
 
-// //----------------------------------------------------------------------------------------------------------------------------------------------------------
  gimmeBaby() {
   var baby = new Player(this.initialPosition, this.nodes, this.needsCoin);
-  baby.brain = this.brain.clone();//babies have the same brain as their parents
+  baby.brain = this.brain.clone();
   baby.deathByDot = this.deathByDot;
   baby.deathAtStep = this.deathAtStep;
   baby.gen = this.gen;

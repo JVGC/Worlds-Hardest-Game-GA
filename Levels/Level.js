@@ -151,8 +151,8 @@ class Level {
 
     updatePlayers(players, minStep){
         for (var i = 0; i< players.length; i++) {
-            if (players[i].brain.step > minStep) {//if the player has already taken more steps than the best player has taken to reach the goal
-                players[i].dead = true;//then it dead
+            if (players[i].brain.step > minStep) {
+                players[i].dead = true;
             }else{
                 actual_level.updatePlayer(players[i]);
             }

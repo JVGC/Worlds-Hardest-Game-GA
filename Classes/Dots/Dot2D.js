@@ -15,30 +15,26 @@ class Dot2D extends Dot {
       this.bounceTimer = 10;
     }
   
-    //------------------------------------------------------------------------------------------------------------
-    //moves the dot
      move() {
   
       for (var i = 0; i < this.bouncers.length; i++) {
-        if (this.bounceTimer < 0 && dist(this.position.x, this.position.y, this.bouncers[i].pixelPos.x + tileSize/2, this.bouncers[i].pixelPos.y + tileSize/2) < this.speed) {//if reached bouncer
+        if (this.bounceTimer < 0 && dist(this.position.x, this.position.y, this.bouncers[i].pixelPos.x + tileSize/2, this.bouncers[i].pixelPos.y + tileSize/2) < this.speed) {
           this.bounceTimer = 10;
-          this.bounceWait= 1;//wait 1 frames then change direction
+          this.bounceWait= 1;
         }
       }
       if (this.bounceWait ==0) {
-        //change direction
         this.velocity.y *= -1;
         this.velocity.x *= -1;
   
       }
   
-      this.position.add(this.velocity);//move dot
+      this.position.add(this.velocity);
       this.bounceTimer --;
       this.bounceWait --;
     }
   
-    //------------------------------------------------------------------------------------------------------------
-    //draws the dot
+
     show() {
       fill(0, 0, 255);
       stroke(0);
@@ -47,9 +43,8 @@ class Dot2D extends Dot {
     }
   
   
-    //------------------------------------------------------------------------------------------------------------
-    //returns true of the Pvectors define a square which collides with this dot
-    collides(ptl, pbr) {//player dimensions
+
+    collides(ptl, pbr) {
   
       var topLeft = createVector(this.position.x - this.diameter/2, this.position.y-this.diameter/2);
       var bottomRight = createVector(this.position.x + this.diameter/2, this.position.y + this.diameter/2);
@@ -62,8 +57,6 @@ class Dot2D extends Dot {
       }
       return false;
     }
-    //------------------------------------------------------------------------------------------------------------
-    //returns the dot to its starting state
   
     resetDot() {
       this.position = this.startingPos.copy();
@@ -71,8 +64,7 @@ class Dot2D extends Dot {
       this.bounceTimer = 10;
       this.bounceWait = -1;
     }
-    //------------------------------------------------------------------------------------------------------------
-    //returns a copy of this dot object
+
     clone() {
       var clone = new Dot(this.bouncers[0], this.bouncers[1], floor(this.velocity.x), floor(this.velocity.y));
       clone.velocity = this.velocity.copy();

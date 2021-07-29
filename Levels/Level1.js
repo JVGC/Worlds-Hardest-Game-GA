@@ -8,7 +8,9 @@ level1 = {
         'right': 7
     },
     'nodes': [17,2],
-    'coins': [],
+    'coins': [
+        [840, 420]
+    ],
     'playersInitialPosition':[230,300],
     'solids':[
         {'top':1, 'left':1, 'bottom':1, 'right':8},
