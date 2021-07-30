@@ -10,19 +10,19 @@ de otimização de desempenho, para jogar o Jogo Mais Dificil do Mundo, sucesso 
 anos 2000. O AE (sigla para algoritmo evolutivo, como passaremos a chamá-lo a partir de agora)
 foi baseado em 4 técnicas distintas:
  
-predação simples, que elimina o pior indivíduo da população
+=> predação simples, que elimina o pior indivíduo da população
 e insere um novo completamente divergente, a fim de gerar diversidade e lapidar possíveis
 indivíduos atrasados no curso da evolução;
 
-reprodução assexuada ou clonagem, que como o próprio nome sugere, multiplica um indivíduo ou
+=> reprodução assexuada ou clonagem, que como o próprio nome sugere, multiplica um indivíduo ou
 uma parcela da população promovendo a convergência dos resultados;
 
-mutação variável, uma técnica de adaptação inteligente que se baseia no histórico de 
+=> mutação variável, uma técnica de adaptação inteligente que se baseia no histórico de 
 melhoria do melhor indivíduo presente na população para gerar um incremento ou decremento
 da taxa de mutação, a fim de extrair o melhor de uma população em estado de diversidade e
 em estado de convergência
 
-evolução incremental, ou "um passo de cada vez", como enxerga este que vos escreve. Reduz
+=> evolução incremental, ou "um passo de cada vez", como enxerga este que vos escreve. Reduz
 o problema incialmente a um passo base e, a partir daí, a evolução é escalada, concentrando
 o foco do algoritmo etapa a etapa e gerando um desenvolvimento coeso ao longo da execução.  
  
